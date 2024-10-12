@@ -28,10 +28,24 @@ int main(){
 
     //receive the message from the client
     char buffer[1024] = {0};
-    recv(clientSocket, buffer, sizeof(buffer), 0);
-    cout<< "Message from client: "<< buffer << endl;
 
-    //close the socket
+    while(true){
+        //clear the buffer
+        memset(buffer, 0, sizeof(buffer));
+
+        //receive the message from the client
+        int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
+        if(bytesReceived == 0){
+            cout<< "Connection Closed by Client!" << endl;
+            break;
+        }
+
+        cout<< "Message from client: "<< buffer << endl;
+    }
+   
+
+    //close the client and the server socket
+    close(clientSocket);
     close(serverSocket);
 
     return 0;
